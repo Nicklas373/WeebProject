@@ -71,7 +71,7 @@ async def bot_ver(event):
             revout = str(stdout.decode().strip()) + str(stderr.decode().strip())
 
             await event.edit(
-                "`Userbot Version: " f"{verout}" "` \n" "`Revision: " f"{revout}" "`"
+                "`HANA-CI Userbot Version: " f"{verout}" "` \n" "`Revision: " f"{revout}" "`"
             )
         else:
             await event.edit(
@@ -83,9 +83,12 @@ async def bot_ver(event):
 async def amireallyalive(alive):
     """For .alive command, check if the bot is running."""
     output = (
-        f"**WeebProject** is running on **{repo.active_branch.name}**\n\n"
-        f"**Python :** __v{python_version()}__\n"
-        f"**Telethon :** __v{version.__version__}__\n"
+        f"**HANA-CI UserBot Service is running !**\n\n"
+        f"**Repository :**{repo.active_branch.name}\n"
+        f"**UserBot Service: :** WeebProject\n"
+        f"**Revision: :** 20240814\n\n"
+        f"**Telethon :** __{version.__version__}__\n"
+        f"**Python :** __{python_version()}__\n"
         f"**User :** __{DEFAULTUSER}__"
     )
     if ALIVE_LOGO:

@@ -25,21 +25,7 @@ from userbot.events import register
 from userbot.utils import run_cmd
 
 KANGING_STR = [
-    "Eh... Koq bagus... aku curry ahhh :3",
-    "Aku curry ya kakak :)",
-    "Curry Sticker dulu yee kan",
-    "ehh, mantep nih.....aku ambil ya kaka",
-    "Bagus eaaaa....\nAmbil ahh....",
-    "Ini Sticker aku ambil yaa\nDUARR!",
-    "leh ugha ni Sticker\nCurry ahh~",
-    "Pim Pim Pom!!!\nni Sticker punya aing sekarang hehe",
-    "Bentar boss, ane curry dulu",
-    "Ihh, bagus nih\nCurry ahh~",
-    "Curry lagi yee kan.....",
-    "CURRY TROSS!!!",
-    "Curry Sticker ahh.....",
-    "Curry dolo boss",
-    "Swiper jangan mencurry",
+     "It's look good anyway, okay it's on my pocket now...",
 ]
 
 
@@ -287,7 +273,7 @@ async def kang(args):
                 await bot.send_read_acknowledge(conv.chat_id)
 
         await args.edit(
-            "Curry Success!" f"\n[Klik Disini](t.me/addstickers/{packname})",
+            "Stealing success!" f"\n[Click Here](t.me/addstickers/{packname})",
             parse_mode="md",
         )
 

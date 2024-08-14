@@ -26,19 +26,18 @@ from userbot.modules.sql_helper.pm_permit_sql import get_approved
 
 # ========================= CONSTANTS ============================
 DEF_UNAPPROVED_MSG = (
-    "I haven't approved you to PM yet.\n"
-    "Wait for me to approve your PM.\n"
-    "Until then, don't spam my PM or you'll get blocked and reported as spam...\n"
-    "CAPICHE?\n\n"
-    "-Userbot"
+    "`HANA-CI Userbot Service | Started !\n\n`"
+    "`Currently i haven't approved to your PM or message now\n`"
+    "`Please wait until i approve it\n'"
+    "`Until then, please don't spam with PM or message on me, or you'll get blocked and reported if you do so!`"
 )
 # =================================================================
 
 
 @register(incoming=True, disable_edited=True, disable_errors=True)
 async def permitpm(event):
-    """Prohibits people from PMing you without approval. \
-        Will block retarded nibbas automatically."""
+    """Prohibits people from spam message without approval. \
+        HANA-CI Userbot Service | Block Start !."""
     if not PM_AUTO_BAN:
         return
     self_user = await event.client.get_me()
@@ -93,9 +92,8 @@ async def permitpm(event):
 
             if COUNT_PM[event.chat_id] == int(pm_limit):
                 await event.respond(
-                    "`You were spamming my PM.`\n"
-                    "`You have been blocked and reported as spam.`\n"
-                    "`Bye.`"
+                    "`Prohibits people from spam message without approval.`\n"
+                    "`HANA-CI Userbot Service | Block Start !`"
                 )
 
                 try:
@@ -105,9 +103,9 @@ async def permitpm(event):
                     if BOTLOG:
                         await event.client.send_message(
                             BOTLOG_CHATID,
-                            "Count PM is seemingly going retard, please restart bot!",
+                            "Counting overleft message overloaded, please restart this service!",
                         )
-                    return LOGS.info("CountPM went retard")
+                    return LOGS.info("Counting message overloaded")
 
                 await event.client(BlockRequest(event.chat_id))
                 await event.client(ReportSpamRequest(peer=event.chat_id))

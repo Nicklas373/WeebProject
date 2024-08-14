@@ -46,9 +46,7 @@ if version_info[0] < 3 or version_info[1] < 9:
 
 # Check if the config was edited by using the already used variable.
 # Basically, its the 'virginity check' for the config file ;)
-CONFIG_CHECK = os.environ.get(
-    "___________PLOX_______REMOVE_____THIS_____LINE__________", None
-)
+CONFIG_CHECK = os.environ.get("", None)
 
 if CONFIG_CHECK:
     LOGS.info(
@@ -80,10 +78,10 @@ HEROKU_API_KEY = os.environ.get("HEROKU_API_KEY", None)
 
 # Custom (forked) repo URL for updater.
 UPSTREAM_REPO_URL = os.environ.get(
-    "UPSTREAM_REPO_URL", "https://github.com/BianSepang/WeebProject.git"
+    "UPSTREAM_REPO_URL", "https://github.com/Nicklas373/WeebProject.git"
 )
 # UPSTREAM_REPO_URL branch, the default is master
-UPSTREAM_REPO_BRANCH = os.environ.get("UPSTREAM_REPO_BRANCH", "master")
+UPSTREAM_REPO_BRANCH = os.environ.get("UPSTREAM_REPO_BRANCH", "personal")
 
 # Console verbose logging
 CONSOLE_LOGGER_VERBOSE = sb(os.environ.get("CONSOLE_LOGGER_VERBOSE", "False"))
@@ -273,7 +271,9 @@ with bot:
 async def update_restart_msg(chat_id, msg_id):
     DEFAULTUSER = ALIVE_NAME or "Set `ALIVE_NAME` ConfigVar!"
     message = (
-        f"**WeebProject is back up and running!**\n\n"
+        f"**HANA-CI UserBot Service is restored !**\n\n"
+        f"**UserBot: :** WeebProject\n"
+        f"**Revision: :** 20240814\n"
         f"**Telethon :** __{version.__version__}__\n"
         f"**Python :** __{python_version()}__\n"
         f"**User :** __{DEFAULTUSER}__"
