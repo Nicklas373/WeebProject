@@ -17,6 +17,9 @@ from telethon.errors.rpcerrorlist import MediaEmptyError
 from userbot import ALIVE_LOGO, ALIVE_NAME, CMD_HELP
 from userbot.events import register
 
+import json
+import subprocess
+
 # ================= CONSTANT =================
 DEFAULTUSER = str(ALIVE_NAME) if ALIVE_NAME else uname().node
 repo = Repo()
@@ -78,15 +81,17 @@ async def bot_ver(event):
                 "Shame that you don't have git, you're running - 'v1.beta.4' anyway!"
             )
 
-
 @register(outgoing=True, pattern=r"^\.(alive|on)$")
 async def amireallyalive(alive):
     """For .alive command, check if the bot is running."""
+    global DEFAULTUSER
+    DEFAULTUSER = str(ALIVE_NAME) if ALIVE_NAME else uname().node
+
     output = (
         f"**HANA-CI UserBot Service is running !**\n\n"
         f"**Repository :**{repo.active_branch.name}\n"
-        f"**UserBot Service: :** WeebProject\n"
-        f"**Revision: :** 20240814\n\n"
+        f"**UserBot Service :** WeebProject\n"
+        f"**Revision :** 20240814\n"
         f"**Telethon :** __{version.__version__}__\n"
         f"**Python :** __{python_version()}__\n"
         f"**User :** __{DEFAULTUSER}__"
@@ -119,7 +124,6 @@ async def amireallyalivereset(ureset):
     global DEFAULTUSER
     DEFAULTUSER = str(ALIVE_NAME) if ALIVE_NAME else uname().node
     await ureset.edit("`" "Successfully reset user for alive!" "`")
-
 
 CMD_HELP.update(
     {
