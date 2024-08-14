@@ -106,7 +106,7 @@ def register(**args):
                 if not disable_errors:
                     date = strftime("%Y-%m-%d %H:%M:%S", gmtime())
 
-                    text = "**USERBOT ERROR REPORT**\n"
+                    text = "**HANA-CI USERBOT SERVICE | ERROR REPORT**\n"
                     text += "Nothing is logged except the fact of error and date."
 
                     ftext = "========== DISCLAIMER =========="
@@ -145,8 +145,8 @@ def register(**args):
 
                     if LOGSPAMMER:
                         await check.respond(
-                            "`Sorry, my userbot has crashed."
-                            "\nThe error logs are stored in the userbot's log chat.`"
+                            "`It seems userbot service has beent terminated."
+                            "\nThe error logs are stored in the log chat.`"
                         )
 
                         async with PasteBin(ftext) as client:
