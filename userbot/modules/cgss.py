@@ -15,8 +15,8 @@ from userbot import CMD_HELP
 from userbot.events import register
 import json, requests
 
-@register(outgoing=True, pattern=r"^\.cgssMdl$")
-async def cgssMdl(cgss):
+@register(outgoing=True, pattern=r"^\.cgss$")
+async def cgss(cgss):
     """For .cgss command, get latest revision on IM@S Cinderella Girls Starlight Stage JP dataset."""
     version=None
     verbose=True
@@ -62,6 +62,6 @@ async def cgssMdl(cgss):
 
 CMD_HELP.update(
     {
-        "cgssMdl": ">`.cgss`" "\nUsage: Shows latest revision on IM@S Cinderella Girls Starlight Stage JP dataset.",
+        "cgss": ">`.cgss`" "\nUsage: Shows latest revision on IM@S Cinderella Girls Starlight Stage JP dataset.",
     }
 )

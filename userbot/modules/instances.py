@@ -28,8 +28,8 @@ async def diskinfo(diskinf):
     msg = '''
 Storage Info
 Storage Total Capacity    = {} GB
-Storage Total Usage         = {} GB | {} %
-Storage Total Free            = {} GB\n'''.format(diskTotal,diskUsed,diskPercent,diskAvail)
+Storage Total Usage       = {} GB | {} %
+Storage Total Free        = {} GB\n'''.format(diskTotal,diskUsed,diskPercent,diskAvail)
     
     await diskinf.edit("`"+msg+"`")
 
@@ -41,8 +41,8 @@ async def inslogs(insl):
             await insl.edit("`Initialize...`")
 
             fetch = await asyncrunapp(
+                "bash",
                 "sendLaravelLog.sh",
-                "",
                 stdout=asyncPIPE,
                 stderr=asyncPIPE,
             )
