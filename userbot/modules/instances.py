@@ -31,8 +31,15 @@ async def insinfo(insinf):
     ramUsage = int(psutil.virtual_memory().used/(1024*1024))
     ramFree = int(psutil.virtual_memory().free/(1024*1024))
     ramUsagePercent = psutil.virtual_memory().percent
-    upTime = asyncrunapp.check_output(['uptime','-p']).decode('UTF-8')
-
+    upTime = await asyncrunapp(
+                "uptime",
+                "-p",
+                stdout=asyncPIPE,
+                stderr=asyncPIPE,
+            )
+    stdout, stderr = await upTime.communicate()
+    upTimeOut = str(stdout.decode().strip()) + str(stderr.decode().strip())
+    
     msg = '''
 HANA-CI Instance Services
 --------------------------------
@@ -51,7 +58,7 @@ RAM Total Free            = {} MB
 Storage Info
 Storage Total Capacity    = {} GB
 Storage Total Usage       = {} GB | {} %
-Storage Total Free        = {} GB\n'''.format(cpuName,cpuCoreCount,cpuUsage,diskTotal,diskUsed,diskPercent,diskAvail,ramTotal,ramUsage,ramFree,ramUsagePercent,upTime)
+Storage Total Free        = {} GB\n'''.format(cpuName,cpuCoreCount,cpuUsage,diskTotal,diskUsed,diskPercent,diskAvail,ramTotal,ramUsage,ramFree,ramUsagePercent,upTimeOut)
     
     await insinf.edit("`"+msg+"`")
 

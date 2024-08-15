@@ -92,9 +92,9 @@ async def amireallyalive(alive):
         f"**Repository :** `{repo.active_branch.name}`\n"
         f"**UserBot Service :** `WeebProject`\n"
         f"**Revision :** `20240815`\n"
-        f"**Telethon :** `__{version.__version__}__`\n"
-        f"**Python :** `__{python_version()}__`\n"
-        f"**User :** `__{DEFAULTUSER}__`"
+        f"**Telethon :** `{version.__version__}`\n"
+        f"**Python :** `{python_version()}`\n"
+        f"**User :** `{DEFAULTUSER}`"
     )
     if ALIVE_LOGO:
         try:

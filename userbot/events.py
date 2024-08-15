@@ -145,7 +145,7 @@ def register(**args):
 
                     if LOGSPAMMER:
                         await check.respond(
-                            "`It seems userbot service has beent terminated.`"
+                            "`It seems **HANA-CI UserBot** service has been terminated.`"
                             "`\nThe error logs are stored in the log chat.`"
                         )
 

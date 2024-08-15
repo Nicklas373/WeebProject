@@ -38,7 +38,7 @@ async def gen_chlog(repo, diff):
 
 async def print_changelogs(event, ac_br, changelog):
     changelog_str = (
-        f"**New UPDATE available for [{ac_br}]:\n\nCHANGELOG:**\n`{changelog}`"
+        f"**New update available for [{ac_br}]**\n\n**What's New:**\n`{changelog}`"
     )
     if len(changelog_str) > 4096:
         await event.edit("`Changelog is too big, view the file to see it.`")
@@ -126,7 +126,7 @@ async def update(event, repo, ups_rem, ac_br):
     except GitCommandError:
         repo.git.reset("--hard", "FETCH_HEAD")
     await event.edit(
-        "`Successfully Updated!\n" "Bot is restarting... Wait for a second!`"
+        "**Update merged sucessfully !**\n" "**HANA-CI UserBot** Restart !\n `Initiliaze...`"
     )
 
     try:

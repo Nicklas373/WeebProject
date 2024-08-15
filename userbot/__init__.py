@@ -274,9 +274,9 @@ async def update_restart_msg(chat_id, msg_id):
         f"**HANA-CI UserBot Service is running !**\n\n"
         f"**UserBot Service :** `WeebProject`\n"
         f"**Revision :** `20240815`\n"
-        f"**Telethon :** `__{version.__version__}__`\n"
-        f"**Python :** `__{python_version()}__`\n"
-        f"**User :** `__{DEFAULTUSER}__`"
+        f"**Telethon :** `{version.__version__}`\n"
+        f"**Python :** `{python_version()}`\n"
+        f"**User :** `{DEFAULTUSER}`"
     )
     await bot.edit_message(chat_id, msg_id, message)
     return True
