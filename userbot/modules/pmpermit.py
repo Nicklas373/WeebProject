@@ -26,9 +26,9 @@ from userbot.modules.sql_helper.pm_permit_sql import get_approved
 
 # ========================= CONSTANTS ============================
 DEF_UNAPPROVED_MSG = (
-    "`HANA-CI Userbot Service | Started !\n\n`"
+    "**HANA-CI Userbot Service | PMPermit Module Start !**\n\n"
     "`Currently i haven't approved to your PM or message now\n`"
-    "`Please wait until i approve it\n'"
+    "`Please wait until i approve it\n`"
     "`Until then, please don't spam with PM or message on me, or you'll get blocked and reported if you do so!`"
 )
 # =================================================================
@@ -92,8 +92,9 @@ async def permitpm(event):
 
             if COUNT_PM[event.chat_id] == int(pm_limit):
                 await event.respond(
+                    "**HANA-CI Userbot Service | PMPermit Start !**\n\n"
                     "`Prohibits people from spam message without approval.`\n"
-                    "`HANA-CI Userbot Service | Block Start !`"
+                    "`Blocking and reporting as spam...`"
                 )
 
                 try:

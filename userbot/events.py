@@ -145,8 +145,8 @@ def register(**args):
 
                     if LOGSPAMMER:
                         await check.respond(
-                            "`It seems userbot service has beent terminated."
-                            "\nThe error logs are stored in the log chat.`"
+                            "`It seems userbot service has beent terminated.`"
+                            "`\nThe error logs are stored in the log chat.`"
                         )
 
                         async with PasteBin(ftext) as client:

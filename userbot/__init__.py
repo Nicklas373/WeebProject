@@ -39,8 +39,8 @@ LOGS = getLogger(__name__)
 
 if version_info[0] < 3 or version_info[1] < 9:
     LOGS.info(
-        "You MUST have a python version of at least 3.9"
-        "Multiple features depend on this. Bot quitting."
+        "Python v3.9 are required as minimum version"
+        "Shutting down the services."
     )
     quit(1)
 
@@ -271,12 +271,12 @@ with bot:
 async def update_restart_msg(chat_id, msg_id):
     DEFAULTUSER = ALIVE_NAME or "Set `ALIVE_NAME` ConfigVar!"
     message = (
-        f"**HANA-CI UserBot Service is restored !**\n\n"
-        f"**UserBot: :** WeebProject\n"
-        f"**Revision: :** 20240814\n"
-        f"**Telethon :** __{version.__version__}__\n"
-        f"**Python :** __{python_version()}__\n"
-        f"**User :** __{DEFAULTUSER}__"
+        f"**HANA-CI UserBot Service is running !**\n\n"
+        f"**UserBot Service :** `WeebProject`\n"
+        f"**Revision :** `20240815`\n"
+        f"**Telethon :** `__{version.__version__}__`\n"
+        f"**Python :** `__{python_version()}__`\n"
+        f"**User :** `__{DEFAULTUSER}__`"
     )
     await bot.edit_message(chat_id, msg_id, message)
     return True

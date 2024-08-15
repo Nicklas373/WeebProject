@@ -89,12 +89,12 @@ async def amireallyalive(alive):
 
     output = (
         f"**HANA-CI UserBot Service is running !**\n\n"
-        f"**Repository :**{repo.active_branch.name}\n"
-        f"**UserBot Service :** WeebProject\n"
-        f"**Revision :** 20240814\n"
-        f"**Telethon :** __{version.__version__}__\n"
-        f"**Python :** __{python_version()}__\n"
-        f"**User :** __{DEFAULTUSER}__"
+        f"**Repository :** `{repo.active_branch.name}`\n"
+        f"**UserBot Service :** `WeebProject`\n"
+        f"**Revision :** `20240815`\n"
+        f"**Telethon :** `__{version.__version__}__`\n"
+        f"**Python :** `__{python_version()}__`\n"
+        f"**User :** `__{DEFAULTUSER}__`"
     )
     if ALIVE_LOGO:
         try:

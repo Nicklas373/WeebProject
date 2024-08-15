@@ -72,15 +72,24 @@ async def mention_afk(mention):
         chat_obj = await mention.client.get_entity(mention.chat_id)
         chat_title = chat_obj.title
 
+        if afk_str:
+            afk_reason = afk_str
+        else:
+           afk_reason = f"`{int(seconds)}s` ago"
+
         if mention.sender_id not in USERS or chat_title not in USERS:
             if AFKREASON:
                 await mention.reply(
-                    f"**I'm not available right now.** (Since: {afk_str})"
-                    f"\nReason: `{AFKREASON}`."
+                    f"**Sorry, currently i'm not available right now.**"
+                    f"\nSince: `{afk_reason}`)"
+                    f"\nReason: `{AFKREASON}`"
+                    "\n**Please come back later.**"
                 )
             else:
                 await mention.reply(
-                    f"**I'm not available right now.** (Since: {afk_str})"
+                    f"**Sorry, currently i'm not available right now.**"
+                    f"\nSince: `{afk_reason}`)"
+                    f"\nReason: `{AFKREASON}`"
                     "\n**Please come back later.**"
                 )
             if mention.sender_id is not None:
@@ -91,12 +100,16 @@ async def mention_afk(mention):
             if USERS[mention.sender_id] % randint(2, 4) == 0:
                 if AFKREASON:
                     await mention.reply(
-                        f"**I'm not available right now.** (Since: {afk_str})"
-                        f"\nReason: `{AFKREASON}`."
+                        f"**Sorry, currently i'm not available right now.**"
+                        f"\nSince: `{afk_reason}`)"
+                        f"\nReason: `{AFKREASON}`"
+                        "\n**Please come back later.**"
                     )
                 else:
                     await mention.reply(
-                        f"**I'm not available right now.** (Since: {afk_str})"
+                        f"**Sorry, currently i'm not available right now.**"
+                        f"\nSince: `{afk_reason}`)"
+                        f"\nReason: `{AFKREASON}`"
                         "\n**Please come back later.**"
                     )
             if mention.sender_id is not None:
@@ -159,15 +172,25 @@ async def afk_on_pm(sender):
                 afk_str = f"`{int(minutes)}m{int(seconds)}s` ago"
             else:
                 afk_str = f"`{int(seconds)}s` ago"
+            
+            if afk_str:
+                afk_reason = afk_str
+            else:
+                afk_reason = f"`{int(seconds)}s` ago"
+
             if sender.sender_id not in USERS:
                 if AFKREASON:
                     await sender.reply(
-                        f"**I'm not available right now.** (Since: {afk_str})"
-                        f"\nReason: `{AFKREASON}`."
+                        f"**Sorry, currently i'm not available right now.**"
+                        f"\nSince: `{afk_reason}`)"
+                        f"\nReason: `{AFKREASON}`"
+                        "\n**Please come back later.**"
                     )
                 else:
                     await sender.reply(
-                        f"**I'm not available right now.** (Since: {afk_str})"
+                        f"**Sorry, currently i'm not available right now.**"
+                        f"\nSince: `{afk_reason}`)"
+                        f"\nReason: `{AFKREASON}`"
                         "\n**Please come back later.**"
                     )
                 USERS.update({sender.sender_id: 1})
@@ -176,12 +199,16 @@ async def afk_on_pm(sender):
                 if USERS[sender.sender_id] % randint(2, 4) == 0:
                     if AFKREASON:
                         await sender.reply(
-                            "**I'm not available right now.** (Since: {afk_str})"
-                            f"\nReason: `{AFKREASON}`."
+                            f"**Sorry, currently i'm not available right now.**"
+                            f"\nSince: `{afk_reason}`)"
+                            f"\nReason: `{AFKREASON}`"
+                            "\n**Please come back later.**"
                         )
                     else:
                         await sender.reply(
-                            "**I'm not available right now.** (Since: {afk_str})"
+                            f"**Sorry, currently i'm not available right now.**"
+                            f"\nSince: `{afk_reason}`)"
+                            f"\nReason: `{AFKREASON}`"
                             "\n**Please come back later.**"
                         )
                     USERS[sender.sender_id] = USERS[sender.sender_id] + 1
@@ -207,11 +234,11 @@ async def set_afk(afk_e):
     afk_start = start1.replace(microsecond=0)
     if string:
         AFKREASON = string
-        await afk_e.edit("**Going AFK Now !**" f"\nReason: `{string}`")
+        await afk_e.edit("**On Leave...**" f"\nReason: `{string}`")
     else:
-        await afk_e.edit("**Going AFK Now !**")
+        await afk_e.edit("**On Leave...**")
     if BOTLOG:
-        await afk_e.client.send_message(BOTLOG_CHATID, "#AFK\nAFK Now!")
+        await afk_e.client.send_message(BOTLOG_CHATID, "#AFK\nOn Leave...")
     ISAFK = True
     afk_time = datetime.now()
     raise StopPropagation

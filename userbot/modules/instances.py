@@ -13,25 +13,47 @@ from userbot.events import register
 
 import psutil
 
-@register(outgoing=True, pattern=r"^\.diskinfo$")
-async def diskinfo(diskinf):
-    """For .diskinf command, get container or instance disk usage."""
+@register(outgoing=True, pattern=r"^\.insinfo$")
+async def insinfo(insinf):
+    """For .insinfo command, get container or instance usage."""
 
-    await diskinf.edit("`Initialize...`")
+    await insinf.edit("`Initialize...`")
 
-    # Define total disk usage
+    # Define instance usage
+    cpuName = "Docker Container Common CPU"
+    cpuCoreCount = psutil.cpu_count(logical=True)
+    cpuUsage = psutil.cpu_percent(interval=1)
     diskTotal = int(psutil.disk_usage('/').total/(1024*1024*1024))
     diskUsed = int(psutil.disk_usage('/').used/(1024*1024*1024))
     diskAvail = int(psutil.disk_usage('/').free/(1024*1024*1024))
     diskPercent = psutil.disk_usage('/').percent
+    ramTotal = int(psutil.virtual_memory().total/(1024*1024))
+    ramUsage = int(psutil.virtual_memory().used/(1024*1024))
+    ramFree = int(psutil.virtual_memory().free/(1024*1024))
+    ramUsagePercent = psutil.virtual_memory().percent
+    upTime = asyncrunapp.check_output(['uptime','-p']).decode('UTF-8')
 
     msg = '''
+HANA-CI Instance Services
+--------------------------------
+
+CPU Info
+CPU Name                  = {}
+CPU Core Count            = {} Cores
+CPU Usage                 = {} %
+CPU Uptime                = {}
+
+RAM Info
+RAM Total Capacity        = {} MB
+RAM Total Usage           = {} MB | {} %
+RAM Total Free            = {} MB
+
 Storage Info
 Storage Total Capacity    = {} GB
 Storage Total Usage       = {} GB | {} %
-Storage Total Free        = {} GB\n'''.format(diskTotal,diskUsed,diskPercent,diskAvail)
+Storage Total Free        = {} GB\n'''.format(cpuName,cpuCoreCount,cpuUsage,diskTotal,diskUsed,diskPercent,diskAvail,ramTotal,ramUsage,ramFree,ramUsagePercent,upTime)
     
-    await diskinf.edit("`"+msg+"`")
+    await insinf.edit("`"+msg+"`")
 
 @register(outgoing=True, pattern=r"^\.inslogs$")
 async def inslogs(insl):
@@ -58,7 +80,7 @@ async def inslogs(insl):
 
 CMD_HELP.update(
     {
-        "diskinfo": ">`.diskinf`" "\nUsage: Shows container or instance disk usage.",
+        "insinfo": ">`.insinfo`" "\nUsage: Shows container or instance usage.",
         "inslogs": ">`.inslogs`" "\nUsage: Shows container or instance logs.",
     }
 )
