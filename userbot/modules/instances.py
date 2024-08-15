@@ -58,7 +58,7 @@ RAM Total Free            = {} MB
 Storage Info
 Storage Total Capacity    = {} GB
 Storage Total Usage       = {} GB | {} %
-Storage Total Free        = {} GB\n'''.format(cpuName,cpuCoreCount,cpuUsage,diskTotal,diskUsed,diskPercent,diskAvail,ramTotal,ramUsage,ramFree,ramUsagePercent,upTimeOut)
+Storage Total Free        = {} GB\n'''.format(cpuName,cpuCoreCount,cpuUsage,upTimeOut,ramTotal,ramUsage,ramFree,ramUsagePercent,diskTotal,diskUsed,diskPercent,diskAvail)
     
     await insinf.edit("`"+msg+"`")
 
