@@ -7,6 +7,8 @@
 
 import os
 import signal
+from asyncio import create_subprocess_exec as asyncrunapp
+from asyncio.subprocess import PIPE as asyncPIPE
 from distutils.util import strtobool as sb
 from logging import DEBUG, INFO, basicConfig, getLogger
 from platform import python_version
@@ -270,10 +272,20 @@ with bot:
 
 async def update_restart_msg(chat_id, msg_id):
     DEFAULTUSER = ALIVE_NAME or "Set `ALIVE_NAME` ConfigVar!"
+    revision = await asyncrunapp(
+                "git",
+                "rev-parse",
+                '--short',
+                'HEAD',
+                stdout=asyncPIPE,
+                stderr=asyncPIPE,
+            )
+    stdout, stderr = await revision.communicate()
+    revOut = str(stdout.decode().strip()) + str(stderr.decode().strip())
     message = (
         f"**HANA-CI UserBot Service is running !**\n\n"
         f"**UserBot Service :** `WeebProject`\n"
-        f"**Revision :** `20240815`\n"
+        f"**Revision :** `{revOut}`\n"
         f"**Telethon :** `{version.__version__}`\n"
         f"**Python :** `{python_version()}`\n"
         f"**User :** `{DEFAULTUSER}`"
