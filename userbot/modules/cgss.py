@@ -114,20 +114,20 @@ async def cgssSync(cgss):
     csv_header= ['name', 'hash', 'size', 'date', 'manifest_version']
 
     try:
-        await cgss.edit("\tCGSS ACB Downloader | Starting!")
-        await cgss.edit("\tfrom @ACA4DFA4 | Update & Maintain by @Nicklas373")
+        await cgss.edit("**CGSS ACB Downloader | Starting!**")
+        await cgss.edit("**from @ACA4DFA4 | Update & Maintain by @Nicklas373**")
         url="https://starlight.kirara.ca/api/v1/info"
         r=requests.get(url)
         jsonData=json.loads(r.content)
         version=jsonData['truth_version']
     except Exception as e:
-        await cgss.edit("\tStarlight kirara was down...")
-        await cgss.edit("\tGetting game version from esterTion source...")
+        await cgss.edit("**Starlight kirara was down...**")
+        await cgss.edit("**Getting game version from esterTion source...**")
         url="https://raw.githubusercontent.com/esterTion/cgss_master_db_diff/master/!TruthVersion.txt"
         r=requests.get(url)
         version=r.text.rstrip()
     else:
-        await cgss.edit("Unknown exception while getting manifest version !")
+        await cgss.edit("**Unknown exception while getting manifest version !**")
                 
     if os.path.exists(cgss_path+"/Static_version"):
         f=Path(cgss_path+"/Static_version")
@@ -140,31 +140,31 @@ async def cgssSync(cgss):
         f.close()
         version_orig = "000000"
     f.close()
-    await cgss.edit("\tCurrent manifest version = "+version_orig)
-    await cgss.edit("\tNew manifest version = "+version)
+    await cgss.edit("**Current manifest version:** `"+version_orig+"`")
+    await cgss.edit("**New manifest version:** `"+version+"`")
     if path.exists(version_orig):
         if version_orig < version:
-            await cgss.edit("\tCurrent version with the latest manifest is outdated")
+            await cgss.edit("`Current version with the latest manifest is outdated`")
             os.mkdir("./"+version)
             old_manifest=os.listdir("./"+version_orig)
             try:
-                await cgss.edit("\tMoving files from current manifest to latest manifest ...")
+                await cgss.edit("`Moving files from current manifest to latest manifest ...`")
                 for x in old_manifest:
                     shutil.move("./"+version_orig+"/"+x,"./"+version+"/"+x)
             except OSError:
-                    await cgss.edit("\tCopy files from %s to static directory failed" % version)
-            await cgss.edit("\tRemoving old manifest files ...")
+                    await cgss.edit("`Copy files from %s to static directory failed`" % version)
+            await cgss.edit("`Removing old manifest files ...`")
             shutil.rmtree("./"+version_orig)
             f=Path("Static_version")
             f=open(f, 'w')
             f.write(version)
             f.close()
-            await cgss.edit("\tRe-writing old static manifest with the latest one")
+            await cgss.edit("`Re-writing old static manifest with the latest one`")
         elif version_orig == version:
-            await cgss.edit("\tCurrent version with the latest manifest is same")
-            await cgss.edit("\tRe-checking manifest ...")
+            await cgss.edit("`Current version with the latest manifest is same`")
+            await cgss.edit("`Re-checking manifest ...`")
         elif version_orig > version:
-            await cgss.edit("\tCurrent version with the latest manifest is unknown")
+            await cgss.edit("`Current version with the latest manifest is unknown`")
 
     else:
         os.mkdir(version)
@@ -172,7 +172,7 @@ async def cgssSync(cgss):
         f=open(f, 'w')
         f.write(version)
         f.close()
-        await cgss.edit("\tRe-writing static manifest with the latest one")
+        await cgss.edit("`Re-writing static manifest with the latest one`")
     if not os.path.exists(cgss_logs):
         os.makedirs(cgss_logs)
     if not os.path.exists(cgss_path+"/"+version+"/solo"):
@@ -186,7 +186,7 @@ async def cgssSync(cgss):
     lz4name="./manifests/manifest_"+version+".db.lz4"
     if not os.path.exists(dbname):
         if not os.path.exists(lz4name):
-            await cgss.edit("\tDownloading lz4-compressed database ...")
+            await cgss.edit("**Downloading lz4-compressed database ...**")
             url="https://asset-starlight-stage.akamaized.net/dl/"+version+"/manifests/Android_AHigh_SHigh"
             r=requests.get(url,headers=dl_headers)
             with open(lz4name,'wb') as fp:
@@ -210,7 +210,7 @@ async def cgssSync(cgss):
         del(dec)
         del(dat)
 
-    await cgss.edit("\tAnalysing sqlite3 database ...\n")
+    await cgss.edit("`Analysing sqlite3 database ...`")
     db=sqlite3.Connection(dbname)
 
     song_in_folder = np.array(["bgm", "sound", "se"])
@@ -218,13 +218,13 @@ async def cgssSync(cgss):
     i = 0
     while i < 3:
         csv_path=cgss_logs+"/csv/"+song_in_folder[i]+".csv"
-        await cgss.edit("\tDownloading assets for: "+song_in_folder[i]+"...")
+        await cgss.edit("**Downloading assets for:** `"+song_in_folder[i]+"`")
         query=db.execute("select name,hash,size from manifests where name like '"+song_in_alias[i]+"/%.acb' and size > '7000'")
         cgss_folder=cgss_path+"/"+version+"/"+song_in_folder[i]
-        if not os.path.exists(version+"/"+song_in_folder[i]+"/"):
+        if not os.path.exists(cgss_path+"/"+version+"/"+song_in_folder[i]+"/"):
             os.makedirs(cgss_folder)
-        fp1=open(version+"/"+song_in_folder[i]+"/"+song_in_alias[i]+"_ren1.bat",'w')
-        fp2=open(version+"/"+song_in_folder[i]+"/"+song_in_alias[i]+"_ren2.bat",'w')
+        fp1=open(cgss_path+"/"+version+"/"+song_in_folder[i]+"/"+song_in_alias[i]+"_ren1.bat",'w')
+        fp2=open(cgss_path+"/"+version+"/"+song_in_folder[i]+"/"+song_in_alias[i]+"_ren2.bat",'w')
         today=date.today()
         if not os.path.exists(csv_path):
             if not os.path.exists(cgss_logs+"/csv/"):
@@ -236,7 +236,7 @@ async def cgssSync(cgss):
         for name,hash,size in query:
             fp1.write("ren "+hash+' '+name[2:]+'\n')
             fp2.write("ren "+name[2:]+' '+hash+'\n')
-            if not os.path.exists(version+"/"+song_in_folder[i]+"/"+hash):
+            if not os.path.exists(cgss_path+"/"+version+"/"+song_in_folder[i]+"/"+hash):
                 csv_rows=[name[2:], hash, humansize(size), today, version]
                 f = open(csv_path, 'a', encoding='UTF8', newline='')
                 writer = csv.writer(f)
@@ -266,9 +266,9 @@ async def cgssSync(cgss):
 
     solo_list = np.loadtxt(cgss_logs+"/txt/"+"solo_list.txt", dtype=str, delimiter=",") 
     for song_in_query in solo_list:
-        await cgss.edit("\tDownloading assets for: "+song_in_query+"...")
+        await cgss.edit("**Downloading assets for:** `"+song_in_query+"`")
         query=db.execute("select name,hash,size from manifests where name like 'l/"+song_in_query+"/%.awb' and name not like 'l/song_%_part/inst_song_%_another.awb'")
-        part=version+"/solo/"+song_in_query
+        part=cgss_path+"/"+version+"/solo/"+song_in_query
         if not os.path.exists(part):
             os.makedirs(part)
         csv_solo_path=cgss_logs+"/csv/"+song_in_query+".csv"
@@ -281,11 +281,11 @@ async def cgssSync(cgss):
             writer.writerow(csv_header)
             f.close() 
         for name,hash,size in query:
-            fp1=open(version+"/solo/"+song_in_query+"/p_ren1.bat",'a')
-            fp2=open(version+"/solo/"+song_in_query+"/p_ren2.bat",'a')
+            fp1=open(cgss_path+"/"+version+"/solo/"+song_in_query+"/p_ren1.bat",'a')
+            fp2=open(cgss_path+"/"+version+"/solo/"+song_in_query+"/p_ren2.bat",'a')
             fp1.write("ren "+hash+' '+name[17:]+'\n')
             fp2.write("ren "+name[17:]+' '+hash+'\n')
-            if not os.path.exists(version+"/solo/"+song_in_query+"/"+hash):
+            if not os.path.exists(cgss_path+"/"+version+"/solo/"+song_in_query+"/"+hash):
                 csv_solo_rows=[name[2:], hash, humansize(size), today, version]
                 f = open(csv_solo_path, 'a', encoding='UTF8', newline='')
                 writer = csv.writer(f)
@@ -302,7 +302,7 @@ async def cgssSync(cgss):
                 md5res=hashlib.md5(buf).hexdigest()
                 del(buf)
                 if md5res!=hash:
-                    await cgss.edit("\tFile "+hash+'('+name+')'+" didn't pass md5check, delete and re-downloading ...")
+                    await cgss.edit("**File** `"+hash+'('+name+')'+"` **didn't pass md5check, delete and re-downloading ...**")
                     url="http://asset-starlight-stage.akamaized.net/dl/resources/Sound/"+hash[:2]+"/"+hash
                     dlfilefrmurl(url,version+"/solo/"+song_in_query+"/"+hash,dl_headers)
             fp1.close()
@@ -320,9 +320,9 @@ async def cgssSync(cgss):
     solo_list = np.loadtxt(cgss_logs+"/txt/"+"solo_list_another.txt", dtype=str, delimiter=",") 
     for song_in_query in solo_list:
         new_song_code=song_in_query[5:][:-5]
-        await cgss.edit("\tDownloading assets for: "+song_in_query+"_another...")
+        await cgss.edit("**Downloading assets for:** `"+song_in_query+"_another`...")
         query=db.execute("select name,hash,size from manifests where name like 'l/"+song_in_query+"/inst_song_"+new_song_code+"_%.awb'")
-        part=version+"/solo/"+song_in_query+"_another"
+        part=cgss_path+"/"+version+"/solo/"+song_in_query+"_another"
         if not os.path.exists(part):
             os.makedirs(part)
         csv_solo_path=cgss_logs+"/csv/"+song_in_query+"_another.csv"
@@ -333,11 +333,11 @@ async def cgssSync(cgss):
             writer.writerow(csv_header)
             f.close() 
         for name,hash,size in query:
-            fp1=open(version+"/solo/"+song_in_query+"_another/p_ren1.bat",'a')
-            fp2=open(version+"/solo/"+song_in_query+"_another/p_ren2.bat",'a')
+            fp1=open(cgss_path+"/"+version+"/solo/"+song_in_query+"_another/p_ren1.bat",'a')
+            fp2=open(cgss_path+"/"+version+"/solo/"+song_in_query+"_another/p_ren2.bat",'a')
             fp1.write("ren "+hash+' '+name[17:]+'\n')
             fp2.write("ren "+name[17:]+' '+hash+'\n')
-            if not os.path.exists(version+"/solo/"+song_in_query+"_another/"+hash):
+            if not os.path.exists(cgss_path+"/"+version+"/solo/"+song_in_query+"_another/"+hash):
                 csv_solo_rows=[name[2:], hash, humansize(size), today, version]
                 f = open(csv_solo_path, 'a', encoding='UTF8', newline='')
                 writer = csv.writer(f)
@@ -354,7 +354,7 @@ async def cgssSync(cgss):
                 md5res=hashlib.md5(buf).hexdigest()
                 del(buf)
                 if md5res!=hash:
-                    await cgss.edit("\tFile "+hash+'('+name+')'+" didn't pass md5check, delete and re-downloading ...")
+                    await cgss.edit("**File** `"+hash+'('+name+')'+"` **didn't pass md5check, delete and re-downloading ...**")
                     url="http://asset-starlight-stage.akamaized.net/dl/resources/Sound/"+hash[:2]+"/"+hash
                     dlfilefrmurl(url,version+"/solo/"+song_in_query+"_another/"+hash,dl_headers)
         fp1.close()
