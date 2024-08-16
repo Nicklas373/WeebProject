@@ -127,7 +127,7 @@ async def cgssSync(cgss):
         r=requests.get(url)
         version=r.text.rstrip()
     else:
-        await cgss.edit("")
+        await cgss.edit("Unknown exception while getting manifest version !")
                 
     if os.path.exists(cgss_path+"/Static_version"):
         f=Path(cgss_path+"/Static_version")
