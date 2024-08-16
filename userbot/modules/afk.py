@@ -80,17 +80,17 @@ async def mention_afk(mention):
         if mention.sender_id not in USERS or chat_title not in USERS:
             if AFKREASON:
                 await mention.reply(
-                    f"**Sorry, currently i'm not available right now.**"
-                    f"\nSince: `{afk_reason}`)"
-                    f"\nReason: `{AFKREASON}`"
-                    "\n**Please come back later.**"
+                    f"**Sorry, currently i'm not available right now.**\n\n"
+                    f"Since: **{afk_reason}**\n"
+                    f"Reason: **{AFKREASON}**\n\n"
+                    "**Please contact me later...**"
                 )
             else:
                 await mention.reply(
-                    f"**Sorry, currently i'm not available right now.**"
-                    f"\nSince: `{afk_reason}`)"
-                    f"\nReason: `{AFKREASON}`"
-                    "\n**Please come back later.**"
+                    f"**Sorry, currently i'm not available right now.**\n\n"
+                    f"Since: **{afk_reason}**\n"
+                    f"Reason: **{AFKREASON}**\n\n"
+                    "**Please contact me later...**"
                 )
             if mention.sender_id is not None:
                 USERS.update({mention.sender_id: 1})
@@ -100,17 +100,17 @@ async def mention_afk(mention):
             if USERS[mention.sender_id] % randint(2, 4) == 0:
                 if AFKREASON:
                     await mention.reply(
-                        f"**Sorry, currently i'm not available right now.**"
-                        f"\nSince: `{afk_reason}`)"
-                        f"\nReason: `{AFKREASON}`"
-                        "\n**Please come back later.**"
+                        f"**Sorry, currently i'm not available right now.**\n\n"
+                        f"Since: **{afk_reason}**\n"
+                        f"Reason: **{AFKREASON}**\n\n"
+                        "**Please contact me later...**"
                     )
                 else:
                     await mention.reply(
-                        f"**Sorry, currently i'm not available right now.**"
-                        f"\nSince: `{afk_reason}`)"
-                        f"\nReason: `{AFKREASON}`"
-                        "\n**Please come back later.**"
+                        f"**Sorry, currently i'm not available right now.**\n\n"
+                        f"Since: **{afk_reason}**\n"
+                        f"Reason: **{AFKREASON}**\n\n"
+                        "**Please contact me later...**"
                     )
             if mention.sender_id is not None:
                 USERS[mention.sender_id] += 1
@@ -181,17 +181,17 @@ async def afk_on_pm(sender):
             if sender.sender_id not in USERS:
                 if AFKREASON:
                     await sender.reply(
-                        f"**Sorry, currently i'm not available right now.**"
-                        f"\nSince: `{afk_reason}`)"
-                        f"\nReason: `{AFKREASON}`"
-                        "\n**Please come back later.**"
+                        f"**Sorry, currently i'm not available right now.**\n\n"
+                        f"Since: **{afk_reason}**\n"
+                        f"Reason: **{AFKREASON}**\n\n"
+                        "**Please contact me later...**"
                     )
                 else:
                     await sender.reply(
-                        f"**Sorry, currently i'm not available right now.**"
-                        f"\nSince: `{afk_reason}`)"
-                        f"\nReason: `{AFKREASON}`"
-                        "\n**Please come back later.**"
+                        f"**Sorry, currently i'm not available right now.**\n\n"
+                        f"Since: **{afk_reason}**\n"
+                        f"Reason: **{AFKREASON}**\n\n"
+                        "**Please contact me later...**"
                     )
                 USERS.update({sender.sender_id: 1})
                 COUNT_MSG = COUNT_MSG + 1
@@ -199,17 +199,17 @@ async def afk_on_pm(sender):
                 if USERS[sender.sender_id] % randint(2, 4) == 0:
                     if AFKREASON:
                         await sender.reply(
-                            f"**Sorry, currently i'm not available right now.**"
-                            f"\nSince: `{afk_reason}`)"
-                            f"\nReason: `{AFKREASON}`"
-                            "\n**Please come back later.**"
+                            f"**Sorry, currently i'm not available right now.**\n\n"
+                            f"Since: **{afk_reason}**\n"
+                            f"Reason: **{AFKREASON}**\n\n"
+                            "**Please contact me later...**"
                         )
                     else:
                         await sender.reply(
-                            f"**Sorry, currently i'm not available right now.**"
-                            f"\nSince: `{afk_reason}`)"
-                            f"\nReason: `{AFKREASON}`"
-                            "\n**Please come back later.**"
+                            f"**Sorry, currently i'm not available right now.**\n\n"
+                            f"Since: **{afk_reason}**\n"
+                            f"Reason: **{AFKREASON}**\n\n"
+                            "**Please contact me later...**"
                         )
                     USERS[sender.sender_id] = USERS[sender.sender_id] + 1
                     COUNT_MSG = COUNT_MSG + 1
