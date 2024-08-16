@@ -126,7 +126,7 @@ async def update(event, repo, ups_rem, ac_br):
     except GitCommandError:
         repo.git.reset("--hard", "FETCH_HEAD")
     await event.edit(
-        "**Update merged sucessfully !**\n\n" "**HANA-CI UserBot** `Re-Initiliaze...`"
+        "**Update merged sucessfully !**\n\n" "**HANA-CI UserBot**\n Status: `Re-Initiliaze...`"
     )
 
     try:
