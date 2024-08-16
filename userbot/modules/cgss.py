@@ -243,7 +243,7 @@ async def cgssSync(cgss):
                 writer.writerow(csv_rows)
                 f.close()        
                 url="http://asset-starlight-stage.akamaized.net/dl/resources/Sound/"+hash[:2]+"/"+hash
-                dlfilefrmurl(url,version+"/"+song_in_folder[i]+"/"+hash,dl_headers)
+                dlfilefrmurl(url,cgss_path+"/"+version+"/"+song_in_folder[i]+"/"+hash,dl_headers)
         fp1.close()
         fp2.close()
         i += 1
@@ -292,7 +292,7 @@ async def cgssSync(cgss):
                 writer.writerow(csv_solo_rows)
                 f.close()
                 url="http://asset-starlight-stage.akamaized.net/dl/resources/Sound/"+hash[:2]+"/"+hash
-                dlfilefrmurl(url,version+"/solo/"+song_in_query+"/"+hash,dl_headers)
+                dlfilefrmurl(url,cgss_path+"/"+version+"/solo/"+song_in_query+"/"+hash,dl_headers)
             else:
                 fp=Path(cgss_path+"/"+version+"/solo/"+song_in_query+"/"+hash)
                 fp.touch(exist_ok=True)
@@ -304,7 +304,7 @@ async def cgssSync(cgss):
                 if md5res!=hash:
                     await cgss.edit("**File** `"+hash+'('+name+')'+"` **didn't pass md5check, delete and re-downloading ...**")
                     url="http://asset-starlight-stage.akamaized.net/dl/resources/Sound/"+hash[:2]+"/"+hash
-                    dlfilefrmurl(url,version+"/solo/"+song_in_query+"/"+hash,dl_headers)
+                    dlfilefrmurl(url,cgss_path+"/"+version+"/solo/"+song_in_query+"/"+hash,dl_headers)
             fp1.close()
             fp2.close()
         
@@ -344,7 +344,7 @@ async def cgssSync(cgss):
                 writer.writerow(csv_solo_rows)
                 f.close()
                 url="http://asset-starlight-stage.akamaized.net/dl/resources/Sound/"+hash[:2]+"/"+hash
-                dlfilefrmurl(url,version+"/solo/"+song_in_query+"_another/"+hash,dl_headers)
+                dlfilefrmurl(url,cgss_path+"/"+version+"/solo/"+song_in_query+"_another/"+hash,dl_headers)
             else:
                 fp=Path(cgss_path+"/"+version+"/solo/"+song_in_query+"_another/"+hash)
                 fp.touch(exist_ok=True)
@@ -356,7 +356,7 @@ async def cgssSync(cgss):
                 if md5res!=hash:
                     await cgss.edit("**File** `"+hash+'('+name+')'+"` **didn't pass md5check, delete and re-downloading ...**")
                     url="http://asset-starlight-stage.akamaized.net/dl/resources/Sound/"+hash[:2]+"/"+hash
-                    dlfilefrmurl(url,version+"/solo/"+song_in_query+"_another/"+hash,dl_headers)
+                    dlfilefrmurl(url,cgss_path+"/"+version+"/solo/"+song_in_query+"_another/"+hash,dl_headers)
         fp1.close()
         fp2.close()
         
