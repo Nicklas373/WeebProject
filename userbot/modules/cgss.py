@@ -140,6 +140,10 @@ async def cgssSync(cgss):
         f.close()
         version_orig = "000000"
     f.close()
+
+    if version_orig == "":
+        version_orig = "000000"
+
     await cgss.edit("**Current manifest version:** `"+version_orig+"`")
     await cgss.edit("**New manifest version:** `"+version+"`")
     if os.path.exists(version_orig):
@@ -147,15 +151,19 @@ async def cgssSync(cgss):
             await cgss.edit("`Current version with the latest manifest is outdated`")
             if not os.path.exists(cgss_path+"/"+version):
                 os.mkdir(cgss_path+"/"+version)
-            old_manifest=os.listdir(cgss_path+"/"+version_orig)
-            try:
-                await cgss.edit("`Moving files from current manifest to latest manifest ...`")
-                for x in old_manifest:
-                    shutil.move(cgss_path+"/"+version_orig+"/"+x,cgss_path+"/"+version+"/"+x)
-            except OSError:
-                    await cgss.edit("`Copy files from %s to static directory failed`" % version)
-            await cgss.edit("`Removing old manifest files ...`")
-            shutil.rmtree(cgss_path+"/"+version_orig)
+            if os.path.exists(cgss_path+"\\"+version_orig):
+                old_manifest=os.listdir(cgss_path+"/"+version_orig)
+                try:
+                    await cgss.edit("`Moving files from current manifest to latest manifest ...`")
+                    for x in old_manifest:
+                        shutil.move(cgss_path+"/"+version_orig+"/"+x,cgss_path+"/"+version+"/"+x)
+                except OSError:
+                        await cgss.edit("`Copy files from %s to static directory failed`" % version)
+                await cgss.edit("`Removing old manifest files ...`")
+                shutil.rmtree(cgss_path+"/"+version_orig)
+            else:
+                cgss.edit("**Previous manifest files:** `"+version_orig+"` **are not found !**")
+                cgss.edit("**Abort moving to new manifests !**")
             f=Path("Static_version")
             f=open(f, 'w')
             f.write(version)
@@ -168,7 +176,8 @@ async def cgssSync(cgss):
             await cgss.edit("`Current version with the latest manifest is unknown`")
 
     else:
-        os.mkdir(version)
+        if not os.path.exists(cgss_path+"/"+version):
+            os.mkdir(version)
         f=Path(cgss_path+"/Static_version")
         f=open(f, 'w')
         f.write(version)
@@ -179,7 +188,7 @@ async def cgssSync(cgss):
     if not os.path.exists(cgss_path+"/"+version+"/solo"):
         os.makedirs(cgss_path+"/"+version+"/solo")
                         
-    dl_headers={'User-Agent': 'Dalvik/2.1.0 (Linux; U; Android 7.0; Nexus 42 Build/XYZZ1Y)','X-Unity-Version': '2017.4.2f2','Accept-Encoding': 'gzip','Connection' : 'Keep-Alive','Accept' : '*/*'}
+    dl_headers={'User-Agent': 'BNEI0242/96 CFNetwork/808.2.16 Darwin/16.3.01','RES_VER': version,'APP_VER': '10.3.5','OS_VER': 'iPhone OS 10.2','X-Unity-Version': '2017.4.2f2','Accept-Encoding': 'gzip','Connection' : 'Keep-Alive','Accept' : '*/*','DEVICE_ID': '10FB122A-CC47-4B10-8C78-0D1E6C22119C','DEVICE_NAME': 'iPhone8,1','USER_AGENT': 'BNEI0242/96 CFNetwork/808.2.16 Darwin/16.3.01','IP_ADDRESS': '192.168.12.14','GPU_NAME': 'Apple A9 GPU','KEYCHAIN': '339871861','CARRIER': 'KDDI','IDFA': '3350E88E-ED66-4D46-8B28-D82EA4A6397D'}
 
     if not os.path.exists(cgss_path+"/manifests"):
         os.mkdir(cgss_path+"/manifests")
@@ -188,7 +197,7 @@ async def cgssSync(cgss):
     if not os.path.exists(dbname):
         if not os.path.exists(lz4name):
             await cgss.edit("**Downloading lz4-compressed database ...**")
-            url="https://asset-starlight-stage.akamaized.net/dl/"+version+"/manifests/Android_AHigh_SHigh"
+            url="https://asset-starlight-stage.akamaized.net/dl/"+version+"/manifests/iOS_AHigh_SHigh"
             r=requests.get(url,headers=dl_headers)
             with open(lz4name,'wb') as fp:
                 fp.write(r.content)
@@ -214,10 +223,10 @@ async def cgssSync(cgss):
     await cgss.edit("`Analysing sqlite3 database ...`")
     db=sqlite3.Connection(dbname)
 
-    song_in_folder = np.array(["bgm", "sound", "se"])
-    song_in_alias = np.array(["b", "l", "s"])
+    song_in_folder = np.array(["bgm", "bgm-movie", "sound", "se"])
+    song_in_alias = np.array(["b", "m", "l", "s"])
     i = 0
-    while i < 3:
+    while i < len(song_in_folder):
         csv_path=cgss_logs+"/csv/"+song_in_folder[i]+".csv"
         await cgss.edit("**Downloading assets for:** `"+song_in_folder[i]+"`")
         query=db.execute("select name,hash,size from manifests where name like '"+song_in_alias[i]+"/%.acb' and size > '7000'")
@@ -379,7 +388,7 @@ async def cgssSync(cgss):
         fp1.close()
         fp2.close()
         
-    await cgss.edit("\tCGSS ACB Downloader | Finished!")
+    await cgss.edit("**CGSS ACB Downloader | Finished!**")
 
 @register(outgoing=True, pattern=r"^\.cgssarc$")
 async def cgssArc(arc):
