@@ -3,8 +3,8 @@
 # Copyright 2024, Dicky Herlambang "Nicklas373" <herlambangdicky5@gmail.com>
 # Copyright 2016-2024, HANA-CI Build Project
 # SPDX-License-Identifier: GPL-3.0-or-later
-# This module based on https://github.com/Nicklas373/CGSS_ACB_Downloader that only
-# have minimal function to track DB manifest version and report to user.
+# This module based on https://github.com/Nicklas373/CGSS_ACB_Downloader 
+# Revision: 16630db88f0c123025b8459944ffe120c9718f69
 #
 # Licensed under the Raphielscape Public License, Version 1.c (the "License");
 # you may not use this file except in compliance with the License.
@@ -142,19 +142,20 @@ async def cgssSync(cgss):
     f.close()
     await cgss.edit("**Current manifest version:** `"+version_orig+"`")
     await cgss.edit("**New manifest version:** `"+version+"`")
-    if path.exists(version_orig):
+    if os.path.exists(version_orig):
         if version_orig < version:
             await cgss.edit("`Current version with the latest manifest is outdated`")
-            os.mkdir("./"+version)
-            old_manifest=os.listdir("./"+version_orig)
+            if not os.path.exists(cgss_path+"/"+version):
+                os.mkdir(cgss_path+"/"+version)
+            old_manifest=os.listdir(cgss_path+"/"+version_orig)
             try:
                 await cgss.edit("`Moving files from current manifest to latest manifest ...`")
                 for x in old_manifest:
-                    shutil.move("./"+version_orig+"/"+x,"./"+version+"/"+x)
+                    shutil.move(cgss_path+"/"+version_orig+"/"+x,cgss_path+"/"+version+"/"+x)
             except OSError:
                     await cgss.edit("`Copy files from %s to static directory failed`" % version)
             await cgss.edit("`Removing old manifest files ...`")
-            shutil.rmtree("./"+version_orig)
+            shutil.rmtree(cgss_path+"/"+version_orig)
             f=Path("Static_version")
             f=open(f, 'w')
             f.write(version)
@@ -180,10 +181,10 @@ async def cgssSync(cgss):
                         
     dl_headers={'User-Agent': 'Dalvik/2.1.0 (Linux; U; Android 7.0; Nexus 42 Build/XYZZ1Y)','X-Unity-Version': '2017.4.2f2','Accept-Encoding': 'gzip','Connection' : 'Keep-Alive','Accept' : '*/*'}
 
-    if not os.path.exists("./manifests"):
-        os.mkdir("./manifests")
-    dbname="./manifests/manifest_"+version+".db"
-    lz4name="./manifests/manifest_"+version+".db.lz4"
+    if not os.path.exists(cgss_path+"/manifests"):
+        os.mkdir(cgss_path+"/manifests")
+    dbname=cgss_path+"/manifests/manifest_"+version+".db"
+    lz4name=cgss_path+"/manifests/manifest_"+version+".db.lz4"
     if not os.path.exists(dbname):
         if not os.path.exists(lz4name):
             await cgss.edit("**Downloading lz4-compressed database ...**")
@@ -244,6 +245,20 @@ async def cgssSync(cgss):
                 f.close()        
                 url="http://asset-starlight-stage.akamaized.net/dl/resources/Sound/"+hash[:2]+"/"+hash
                 dlfilefrmurl(url,cgss_path+"/"+version+"/"+song_in_folder[i]+"/"+hash,dl_headers)
+                await cgss.edit("**Downloading assets:** `"+name[2:]+"`")
+            else:
+                fp=Path(cgss_path+"\\"+version+"\\"+song_in_folder[i]+"\\"+hash)
+                fp.touch(exist_ok=True)
+                fp=open(fp,'rb')
+                buf=fp.read()
+                fp.close()
+                md5res=hashlib.md5(buf).hexdigest()
+                del(buf)
+                if md5res!=hash:
+                    await cgss.edit("**File** `"+hash+'('+name+')'+"` **didn't pass md5check, delete and re-downloading ...**")
+                    url="http://asset-starlight-stage.akamaized.net/dl/resources/Sound/"+hash[:2]+"/"+hash
+                    dlfilefrmurl(url,version+"\\"+song_in_folder[i]+"\\"+hash,dl_headers)
+                    await cgss.edit("**Downloading assets:** `"+name[2:]+"`")
         fp1.close()
         fp2.close()
         i += 1
@@ -253,7 +268,7 @@ async def cgssSync(cgss):
     if not os.path.exists(cgss_logs+"/txt/"):
         os.makedirs(cgss_logs+"/txt/")
 
-    if os.path.isfile(cgss_logs+"/txt/"+"solo_list.txt"):
+    if os.path.exists(cgss_logs+"/txt/"+"solo_list.txt"):
         os.remove(cgss_logs+"/txt/"+"solo_list.txt")
 
     for name,hash,size in query:
@@ -293,6 +308,7 @@ async def cgssSync(cgss):
                 f.close()
                 url="http://asset-starlight-stage.akamaized.net/dl/resources/Sound/"+hash[:2]+"/"+hash
                 dlfilefrmurl(url,cgss_path+"/"+version+"/solo/"+song_in_query+"/"+hash,dl_headers)
+                await cgss.edit("**Downloading assets:** `"+name[17:]+"`")
             else:
                 fp=Path(cgss_path+"/"+version+"/solo/"+song_in_query+"/"+hash)
                 fp.touch(exist_ok=True)
@@ -305,6 +321,7 @@ async def cgssSync(cgss):
                     await cgss.edit("**File** `"+hash+'('+name+')'+"` **didn't pass md5check, delete and re-downloading ...**")
                     url="http://asset-starlight-stage.akamaized.net/dl/resources/Sound/"+hash[:2]+"/"+hash
                     dlfilefrmurl(url,cgss_path+"/"+version+"/solo/"+song_in_query+"/"+hash,dl_headers)
+                    await cgss.edit("**Downloading assets:** `"+name[17:]+"`")
             fp1.close()
             fp2.close()
         
@@ -345,6 +362,7 @@ async def cgssSync(cgss):
                 f.close()
                 url="http://asset-starlight-stage.akamaized.net/dl/resources/Sound/"+hash[:2]+"/"+hash
                 dlfilefrmurl(url,cgss_path+"/"+version+"/solo/"+song_in_query+"_another/"+hash,dl_headers)
+                await cgss.edit("**Downloading assets:** `"+name[17:]+"`")
             else:
                 fp=Path(cgss_path+"/"+version+"/solo/"+song_in_query+"_another/"+hash)
                 fp.touch(exist_ok=True)
@@ -357,6 +375,7 @@ async def cgssSync(cgss):
                     await cgss.edit("**File** `"+hash+'('+name+')'+"` **didn't pass md5check, delete and re-downloading ...**")
                     url="http://asset-starlight-stage.akamaized.net/dl/resources/Sound/"+hash[:2]+"/"+hash
                     dlfilefrmurl(url,cgss_path+"/"+version+"/solo/"+song_in_query+"_another/"+hash,dl_headers)
+                    await cgss.edit("**Downloading assets:** `"+name[17:]+"`")
         fp1.close()
         fp2.close()
         
@@ -388,11 +407,10 @@ async def cgssArc(arc):
             os.makedirs("downloads")
 
         asset_dir = ["bgm", "se", "solo" , "sound"]
+        await arc.edit("`Begin archiving...`") 
 
         for asset in asset_dir:
             asset_paths = get_all_file_paths(version_orig + "/" + asset) 
-
-            await arc.edit("`Begin archiving...`") 
             try:
                 for file_name in asset_paths: 
                     await arc.edit("`Archiving: `"+file_name) 
@@ -402,7 +420,6 @@ async def cgssArc(arc):
                         zip.write(file) 
             except Exception:
                 await arc.edit("`Archiving error !\nArchive Step: `"+asset) 
-
         await arc.edit("`Archiving completed !`")
     else:
         await arc.edit("`Abort archiving...`")
