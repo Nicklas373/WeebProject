@@ -20,7 +20,7 @@ import numpy as np
 import requests
 import shutil
 import sqlite3,hashlib
-import os, sys, os.path
+import os, os.path
 import time
 from datetime import date
 from lz4 import block
@@ -419,7 +419,7 @@ async def cgssArc(arc):
         await arc.edit("`Begin archiving...`") 
 
         for asset in asset_dir:
-            asset_paths = get_all_file_paths(version_orig + "/" + asset) 
+            asset_paths = get_all_file_paths(cgss_path + "/" + version_orig + "/" + asset) 
             try:
                 for file_name in asset_paths: 
                     await arc.edit("`Archiving: `"+file_name) 
