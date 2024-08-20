@@ -390,54 +390,9 @@ async def cgssSync(cgss):
         
     await cgss.edit("**CGSS ACB Downloader | Finished!**")
 
-@register(outgoing=True, pattern=r"^\.cgssarc$")
-async def cgssArc(arc):
-    """For .cgssArc command, It will archive all assets data on IM@S Cinderella Girls Starlight Stage JP."""
-
-    await arc.edit("`Initialize...`")
-    
-    def get_all_file_paths(directory): 
-        file_paths = [] 
-        for root, files in os.walk(directory): 
-            for filename in files: 
-                filepath = os.path.join(root, filename) 
-                file_paths.append(filepath) 
-    
-        return file_paths         
-  
-    cgss_path=os.getcwd()+"/cgss"
-    if os.path.exists(cgss_path+"/Static_version"):
-        f=Path(cgss_path+"/Static_version")
-        f=open(f)
-        version_orig = f.read()
-        f.close()
-
-        if not os.path.exists("downloads"):
-            os.makedirs("downloads")
-
-        asset_dir = ["bgm", "se", "solo" , "sound"]
-        await arc.edit("`Begin archiving...`") 
-
-        for asset in asset_dir:
-            asset_paths = get_all_file_paths(cgss_path + "/" + version_orig + "/" + asset) 
-            try:
-                for file_name in asset_paths: 
-                    await arc.edit("`Archiving: `"+file_name) 
-
-                with ZipFile("downloads/"+asset+"_"+version_orig+".zip",'w') as zip: 
-                    for file in asset_paths: 
-                        zip.write(file) 
-            except Exception:
-                await arc.edit("`Archiving error !\nArchive Step: `"+asset) 
-        await arc.edit("`Archiving completed !`")
-    else:
-        await arc.edit("`Abort archiving...`")
-        await arc.edit("`Static_version not found !`")
-
 CMD_HELP.update(
     {
         "cgss": ">`.cgss`" "\nUsage: Shows latest revision on IM@S Cinderella Girls Starlight Stage JP dataset.",
-        "cgssarc": ">`.cgssarc`" "\nUsage: Archive assets data on IM@S Cinderella Girls Starlight Stage JP dataset.",
         "cgsssync": ">`.cgsssync`" "\nUsage: Download assets data on IM@S Cinderella Girls Starlight Stage JP."
     }
 )
