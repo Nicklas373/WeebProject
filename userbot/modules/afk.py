@@ -234,11 +234,11 @@ async def set_afk(afk_e):
     afk_start = start1.replace(microsecond=0)
     if string:
         AFKREASON = string
-        await afk_e.edit("**On Leave...**" f"\nReason: `{string}`")
+        await afk_e.edit("**Not standby for a while...**" f"\nReason: `{string}`")
     else:
-        await afk_e.edit("**On Leave...**")
+        await afk_e.edit("**Not standby for a while...**")
     if BOTLOG:
-        await afk_e.client.send_message(BOTLOG_CHATID, "#AFK\nOn Leave...")
+        await afk_e.client.send_message(BOTLOG_CHATID, "#AFK\nNot standby for a while...")
     ISAFK = True
     afk_time = datetime.now()
     raise StopPropagation
