@@ -129,13 +129,13 @@ async def cgssSync(cgss):
     else:
         await cgss.edit("**Unknown exception while getting manifest version !**")
                 
-    if os.path.exists(cgss_path+"/Static_version"):
-        f=Path(cgss_path+"/Static_version")
+    if os.path.exists("Static_version"):
+        f=Path("Static_version")
         f=open(f)
         version_orig = f.read()
         f.close()
     else:
-        f = open(cgss_path+"/Static_version", "w")
+        f = open("Static_version", "w")
         f.write("000000")
         f.close()
         version_orig = "000000"
@@ -151,7 +151,7 @@ async def cgssSync(cgss):
             await cgss.edit("`Current version with the latest manifest is outdated`")
             if not os.path.exists(cgss_path+"/"+version):
                 os.mkdir(cgss_path+"/"+version)
-            if os.path.exists(cgss_path+"\\"+version_orig):
+            if os.path.exists(cgss_path+"/"+version_orig):
                 old_manifest=os.listdir(cgss_path+"/"+version_orig)
                 try:
                     await cgss.edit("`Moving files from current manifest to latest manifest ...`")
