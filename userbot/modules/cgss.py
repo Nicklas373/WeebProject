@@ -35,50 +35,48 @@ async def cgss(cgss):
 
     await cgss.edit("`Initialize...`")
 
-    if not version:
-        if verbose:
-            try:
-                await cgss.edit("`Getting game version ...`")
-                url="https://starlight.kirara.ca/api/v1/info"
-                r=requests.get(url)
-                jsonData=json.loads(r.content)
-                version=jsonData['truth_version']
-            except Exception as e:
-                await cgss.edit("`No DB service was available!...`")
-                version="NULL"
-            else:
-                await cgss.edit("`Getting game version from esterTion source...`")
-                url="https://raw.githubusercontent.com/esterTion/cgss_master_db_diff/master/!TruthVersion.txt"
-                r=requests.get(url)
-                version=r.text.rstrip()
-            await cgss.edit("`Getting game version from local source...`")
-            if os.path.exists("Static_version"):
-                f=Path("Static_version")
-                f=open(f)
-                old_version = f.read()
-                f.close()
-            else:
-                f = open("Static_version", "w")
-                f.write("000000")
-                f.close()
-                old_version = "000000"
-            r=requests.get(url)
-            old_version=r.text.rstrip()
-            if (version > old_version):
-                reason="Local DB older than Dynamic DB!"
-            elif (version == old_version):
-                reason="Local DB on latest version!"
-            elif (version < old_version):
-                reason="Local DB higher than Dynamic DB, ERROR"
-            result=(
-                    f"**CGSS DB Manifest Ver.**\n"
-                    f"\n"
-                    f"**Local DB Ver.** : `{old_version}`\n"
-                    f"**Online DB Ver.** : `{version}`\n"
-                    f"**Status** : `{reason}`\n"
-                    f"\n"
-                    )
-            await cgss.edit(result)
+    try:
+        await cgss.edit("`Getting game version ...`")
+        url="https://starlight.kirara.ca/api/v1/info"
+        r=requests.get(url)
+        jsonData=json.loads(r.content)
+        version=jsonData['truth_version']
+    except Exception as e:
+        await cgss.edit("`No DB service was available!...`")
+        version="NULL"
+    else:
+        await cgss.edit("`Getting game version from esterTion source...`")
+        url="https://raw.githubusercontent.com/esterTion/cgss_master_db_diff/master/!TruthVersion.txt"
+        r=requests.get(url)
+        version=r.text.rstrip()
+    await cgss.edit("`Getting game version from local source...`")
+    if os.path.exists("Static_version"):
+        f=Path("Static_version")
+        f=open(f)
+        old_version = f.read()
+        f.close()
+    else:
+        f = open("Static_version", "w")
+        f.write("000000")
+        f.close()
+        old_version = "000000"
+    r=requests.get(url)
+    old_version=r.text.rstrip()
+    if (version > old_version):
+        reason="Local DB older than Dynamic DB!"
+    elif (version == old_version):
+        reason="Local DB on latest version!"
+    elif (version < old_version):
+        reason="Local DB higher than Dynamic DB, ERROR"
+    result=(
+            f"**CGSS DB Manifest Ver.**\n"
+            f"\n"
+            f"**Local DB Ver.** : `{old_version}`\n"
+            f"**Online DB Ver.** : `{version}`\n"
+            f"**Status** : `{reason}`\n"
+            f"\n"
+            )
+    await cgss.edit(result)
 
 @register(outgoing=True, pattern=r"^\.cgsssync$")
 async def cgssSync(cgss):
@@ -177,7 +175,7 @@ async def cgssSync(cgss):
 
     else:
         if not os.path.exists(cgss_path+"/"+version):
-            os.mkdir(version)
+            os.mkdir(cgss_path+"/"+version)
         f=Path(cgss_path+"/Static_version")
         f=open(f, 'w')
         f.write(version)
