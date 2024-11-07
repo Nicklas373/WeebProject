@@ -82,8 +82,8 @@ async def inslogs(insl):
             await insl.edit("`Logs has been sent with: `" + result)
         except FileNotFoundError:
             await insl.edit("`FileNotFoundError: sendLaravelLog.sh`")
-        except Exception as error:
-            await insl.edit("`Fail on exception: `" + error)
+        except Exception:
+            await insl.edit("`Undefined Exception !`")
 
 CMD_HELP.update(
     {
